@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/N-Tasker/static/css/main.d1727dd3.chunk.css",
+    "main.js": "/N-Tasker/static/js/main.d030900f.chunk.js",
+    "main.js.map": "/N-Tasker/static/js/main.d030900f.chunk.js.map",
+    "runtime-main.js": "/N-Tasker/static/js/runtime-main.1cfeee0d.js",
+    "runtime-main.js.map": "/N-Tasker/static/js/runtime-main.1cfeee0d.js.map",
+    "static/css/2.a6a1c91b.chunk.css": "/N-Tasker/static/css/2.a6a1c91b.chunk.css",
+    "static/js/2.2cd8f587.chunk.js": "/N-Tasker/static/js/2.2cd8f587.chunk.js",
+    "static/js/2.2cd8f587.chunk.js.map": "/N-Tasker/static/js/2.2cd8f587.chunk.js.map",
+    "static/js/3.1e573071.chunk.js": "/N-Tasker/static/js/3.1e573071.chunk.js",
+    "static/js/3.1e573071.chunk.js.map": "/N-Tasker/static/js/3.1e573071.chunk.js.map",
+    "index.html": "/N-Tasker/index.html",
+    "static/css/2.a6a1c91b.chunk.css.map": "/N-Tasker/static/css/2.a6a1c91b.chunk.css.map",
+    "static/css/main.d1727dd3.chunk.css.map": "/N-Tasker/static/css/main.d1727dd3.chunk.css.map",
+    "static/js/2.2cd8f587.chunk.js.LICENSE.txt": "/N-Tasker/static/js/2.2cd8f587.chunk.js.LICENSE.txt",
+    "static/media/bootstrap-icons.css": "/N-Tasker/static/media/bootstrap-icons.ea6f3dfe.woff",
+    "static/media/sandwich.2d312449.jpg": "/N-Tasker/static/media/sandwich.2d312449.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1cfeee0d.js",
+    "static/css/2.a6a1c91b.chunk.css",
+    "static/js/2.2cd8f587.chunk.js",
+    "static/css/main.d1727dd3.chunk.css",
+    "static/js/main.d030900f.chunk.js"
+  ]
+}
