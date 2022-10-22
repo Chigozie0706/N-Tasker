@@ -1,4 +1,13 @@
-The app is hosted here: [https://dacadeorg.github.io/near-marketplace-dapp/](https://dacadeorg.github.io/near-marketplace-dapp/)
+# N-Tasker
+
+With the N-Tracker contract:
+
+- You can create a task 
+- View all task created
+- Delete a task
+- Update a task
+
+The app is hosted here: [https://chigozie0706.github.io/N-Tasker/](https://chigozie0706.github.io/N-Tasker/)
 
 # Getting Started with Create React App
 
