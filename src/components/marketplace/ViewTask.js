@@ -8,14 +8,7 @@ import {
 
 const Index = ({closeModal, toggleModal, showModal, update, 
   taskId, taskDetails = {} }) => {
-  // const navigate =useNavigate()
-  const [taskName, setTaskName] = useState("");
   
-console.log("taskId", taskDetails)
-  
-const [id, setId] = useState("1")
-
-
 const isEmpty = Object.keys(taskDetails).length === 0;
   
   return (

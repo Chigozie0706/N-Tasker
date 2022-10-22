@@ -8,8 +8,6 @@ import { AiFillDelete, AiFillEdit, AiOutlineFolderView } from "react-icons/ai";
 import { GoChecklist } from "react-icons/go";
 import { NotificationSuccess, NotificationError } from "../utils/Notifications";
 import {
-  getProducts as getProductList,
-  buyProduct,
   createProduct, getTasks, createTask, updateTaskById, deleteTaskById, getTaskById
 } from "../../utils/marketplace";
 
@@ -21,48 +19,23 @@ const [taskDetails, setTaskDetails] = useState({})
 const [taskDetailsModal, setTaskDetailsModal] = useState(false)
 const [disable, setDisable] =useState(false)
 
-  // function to get the list of products
-  const getProducts = useCallback(async () => {
-    try {
-      setLoading(true);
-      setProducts(await getProductList());
-    } catch (error) {
-      console.log({ error });
-    } finally {
-      setLoading(false);
-    }
-  });
+  
+  // const addProduct = async (data) => {
+  //   try {
+  //     setLoading(true);
+  //     createProduct(data).then((resp) => {
+  //       getProducts();
+  //     });
+  //     toast(<NotificationSuccess text="Product added successfully." />);
+  //   } catch (error) {
+  //     console.log({ error });
+  //     toast(<NotificationError text="Failed to create a product." />);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  const addProduct = async (data) => {
-    try {
-      setLoading(true);
-      createProduct(data).then((resp) => {
-        getProducts();
-      });
-      toast(<NotificationSuccess text="Product added successfully." />);
-    } catch (error) {
-      console.log({ error });
-      toast(<NotificationError text="Failed to create a product." />);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  //  function to initiate transaction
-  const buy = async (id, price) => {
-    try {
-      await buyProduct({
-        id,
-        price,
-      }).then((resp) => getProducts());
-      toast(<NotificationSuccess text="Product bought successfully" />);
-    } catch (error) {
-      toast(<NotificationError text="Failed to purchase product." />);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  
   const getTaskLists = useCallback(async () => {
     try {
       setLoading(true);
@@ -152,7 +125,6 @@ const closeModal = (data) => {
 
 
   useEffect(() => {
-    // getProducts();
     getTaskLists()
   }, []);
 
