@@ -5,7 +5,6 @@ import { Button, Modal, Form, FloatingLabel } from "react-bootstrap";
 const Index = ({ save }) => {
   const [taskDescription, setTaskDescription] = useState("");
   const [taskName, setTaskName] = useState("");
-  const [price, setPrice] = useState(0);
   const isFormFilled = () => taskName && taskDescription;
 
   const [show, setShow] = useState(false);

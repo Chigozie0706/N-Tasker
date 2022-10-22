@@ -3,16 +3,14 @@ import { toast } from "react-toastify";
 import AddTask from "./AddTask";
 import ViewTask from "./ViewTask"
 import Loader from "../utils/Loader";
-import { Row, Table, Button } from "react-bootstrap";
-import { AiFillDelete, AiFillEdit, AiOutlineFolderView } from "react-icons/ai";
+import {Table, Button } from "react-bootstrap";
+import { AiFillDelete, AiOutlineFolderView } from "react-icons/ai";
 import { GoChecklist } from "react-icons/go";
-import { NotificationSuccess, NotificationError } from "../utils/Notifications";
 import {
-  createProduct, getTasks, createTask, updateTaskById, deleteTaskById, getTaskById
+  getTasks, createTask, updateTaskById, deleteTaskById, getTaskById
 } from "../../utils/marketplace";
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [taskLists, setTaskLists] = useState([])
 const [taskDetails, setTaskDetails] = useState({})
@@ -20,21 +18,6 @@ const [taskDetailsModal, setTaskDetailsModal] = useState(false)
 const [disable, setDisable] =useState(false)
 
   
-  // const addProduct = async (data) => {
-  //   try {
-  //     setLoading(true);
-  //     createProduct(data).then((resp) => {
-  //       getProducts();
-  //     });
-  //     toast(<NotificationSuccess text="Product added successfully." />);
-  //   } catch (error) {
-  //     console.log({ error });
-  //     toast(<NotificationError text="Failed to create a product." />);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   
   const getTaskLists = useCallback(async () => {
     try {
@@ -67,13 +50,19 @@ const [disable, setDisable] =useState(false)
 
 const deleteTask = async (id) => {
   try{
+    setDisable(true)
     deleteTaskById(id)
     .then((resp) => {
-      console.log(resp)
+      toast.success("Task deleted successfully")
+      getTaskLists()
     })
   }
   catch(error) {
-    console.log({error})
+    // console.log({error})
+    toast.error("network error")
+  }
+  finally{
+    setDisable(false)
   }
 }
 
@@ -155,7 +144,7 @@ const closeModal = (data) => {
       </thead>
       <tbody>
       {taskLists.map((item, index) => (
-        <tr>
+        <tr key={index}>
           <td>{index + 1}</td>
           <td>{item.taskName}</td>
           <td>{new Date(item.dateCreated / 1000000).toDateString()}</td>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -18,15 +18,15 @@ const isEmpty = Object.keys(taskDetails).length === 0;
 show={showModal} onHide={toggleModal}
         backdrop="static"
         >
-        <Modal.Header toggle={() => closeModal(false)}></Modal.Header>
+        <Modal.Header toggle={() => closeModal(false)}>Task Details</Modal.Header>
         <Modal.Body>
   {!isEmpty ? 
     <>
-    <p>Task ID: {taskDetails.id}</p>
-    <p>Task Name: {taskDetails.taskName}</p>
-    <p>Task Description: {taskDetails.taskDescription}</p>
-    <p>Date Created: {taskDetails.dateCreated}</p>
-    <p>Status: {taskDetails.status}</p>
+    <p><b>Task ID:</b> {taskDetails.id}</p>
+    <p><b>Task Name:</b> {taskDetails.taskName}</p>
+    <p><b>Task Description:</b> {taskDetails.taskDescription}</p>
+    <p><b>Date Created:</b> {new Date(taskDetails.dateCreated / 1000000).toDateString()}</p>
+    <p><b>Status:</b> <span style={{backgroundColor: taskDetails.status === 'pending' ? 'orange' : 'lightGreen', color: 'grey', textTransform : 'capitalize'}}>{taskDetails.status}</span></p>
     </>
   :null 
 

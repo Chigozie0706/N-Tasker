@@ -1,9 +1,6 @@
 import { PersistentUnorderedMap, context, PersistentMap, u128, logging } from "near-sdk-as";
 
 /**
- * This class represents a product that can be listed on a marketplace.
- * It contains basic properties that are needed to define a product.
- * The price of the product is of type u128 that allows storing it in yocto-NEAR, where `1 yocto = 1^-24`.
  * {@link nearBindgen} - it's a decorator that makes this class serializable so it can be persisted on the blockchain level. 
  */
 @nearBindgen
