@@ -3,7 +3,7 @@ import { Container, Nav } from "react-bootstrap";
 import { login, logout as destroy, accountBalance } from "./utils/near";
 import Wallet from "./components/Wallet";
 import { Notification } from "./components/utils/Notifications";
-import Products from "./components/marketplace/Products";
+import Tasks from "./components/marketplace/Tasks";
 import Cover from "./components/utils/Cover";
 import coverImg from "./assets/img/sandwich.jpg";
 import "./App.css";
@@ -39,7 +39,7 @@ const App = function AppWrapper() {
             </Nav.Item>
           </Nav>
           <main>
-            <Products />
+            <Tasks />
           </main>
         </Container>
       ) : (

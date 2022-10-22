@@ -1,5 +1,5 @@
 {
-  "name": "smartcontract",
+  "name": "taskt",
   "version": "1.0.0",
   "description": "Install the next tools: * `node` * `yarn` * `near-cli`",
   "main": "index.js",

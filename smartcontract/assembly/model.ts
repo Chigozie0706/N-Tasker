@@ -1,4 +1,4 @@
-import { PersistentUnorderedMap, context, PersistentMap, u128 } from "near-sdk-as";
+import { PersistentUnorderedMap, context, PersistentMap, u128, logging } from "near-sdk-as";
 
 /**
  * This class represents a product that can be listed on a marketplace.
@@ -7,41 +7,50 @@ import { PersistentUnorderedMap, context, PersistentMap, u128 } from "near-sdk-a
  * {@link nearBindgen} - it's a decorator that makes this class serializable so it can be persisted on the blockchain level. 
  */
 @nearBindgen
-export class Product {
+export class Task {
     id: string;
-    name: string;
-    description: string;
-    image: string;
-    location: string;
-    price: u128;
-    owner: string;
-    sold: u32;
-    public static fromPayload(payload: Product): Product {
-        const product = new Product();
-        product.id = payload.id;
-        product.name = payload.name;
-        product.description = payload.description;
-        product.image = payload.image;
-        product.location = payload.location;
-        product.price = payload.price;
-        product.owner = context.sender;
-        return product;
+    taskName: string;
+    taskDescription: string;
+    dateCreated: u64;
+    status: string;
+    
+    public static fromPayload(payload: Task): Task {
+        const task = new Task();
+        task.id = payload.id;
+        task.taskName = payload.taskName;
+        task.taskDescription = payload.taskDescription;
+        task.dateCreated = context.blockTimestamp;
+        task.status = "pending";
+        return task;
     }
-    public incrementSoldAmount(): void {
-        this.sold = this.sold + 1;
+
+    
+
+    public static updateTask(
+        id: string
+    ): void {
+        const task = listedTasks.get(id);
+
+        if (task == null) throw new Error("task not found");
+        else {
+            task.status = "done";
+            listedTasks.set(task.id, task);
+        }
+    }
+
+
+    public static deleteTask(
+        id: string
+    ): void {
+    logging.log(`deleting task`);
+        const beat = listedTasks.get(id);
+
+        if (beat == null) throw new Error("drug not found");
+        else {
+            listedTasks.delete(beat.id);
+        }
     }
 }
 
-/**
- * `productsStorage` - it's a key-value datastructure that is used to store products by sellers.
- * The backbone of this datastructure is {@link PersistentUnorderedMap} - a facade in front of the NEAR's {@link Storage}.
- * For the sake of this contract we've chosen {@link PersistentUnorderedMap} as a storage for the next reasons:
- * - `set`, `get` and `delete` operations have a constant time complexity - O(1)
- * - keys are stored in the blockchain (which is opposite to {@link PersistentMap})
- * - provides an interface to return a range of values
- * 
- * Brakedown of the `PersistentUnorderedMap<string, Product>` datastructure:
- * - the key of `PersistentUnorderedMap` is a `productId`
- * - the value in this `PersistentUnorderedMap` is a product itself `Product` that is related to a given key (`productId`)
- */
-export const productsStorage = new PersistentUnorderedMap<string, Product>("LISTED_PRODUCTS");
+
+export const listedTasks = new PersistentUnorderedMap<string,Task>("tasks");

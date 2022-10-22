@@ -1,60 +1,25 @@
-import { Product, productsStorage } from './model';
-import { context, ContractPromiseBatch } from "near-sdk-as";
+import {Task, listedTasks } from './model';
 
-/**
- * 
- * This function changes the state of data in the blockchain. 
- * It is used to issue buy transactions when a product is purchased from a given seller (if the product is available)
- * 
- * @param productId - an identifier of a product that is the subject of purchase
- */
-export function buyProduct(productId: string): void {
-    const product = getProduct(productId);
-    if (product == null) {
-        throw new Error("product not found");
+export function createTask(task: Task): void {
+    let storedTask = listedTasks.get(task.id);
+    if (storedTask !== null) {
+        throw new Error(`a task with ${task.id} already exists`);
     }
-    if (product.price.toString() != context.attachedDeposit.toString()) {
-        throw new Error("attached deposit should be greater than the product's price");
-    }
-    /*
-        `ContractPromiseBatch` is used here to create a transaction to transfer the money to the seller
-        The amount of money to be used in the transaction is taken from `context.attachedDeposit` 
-        which is defined by `--depositYocto=${AMOUNT}` parameter during the invocation 
-    */
-    ContractPromiseBatch.create(product.owner).transfer(context.attachedDeposit);
-    product.incrementSoldAmount();
-    productsStorage.set(product.id, product);
+    listedTasks.set(task.id, Task.fromPayload(task));
 }
 
-/**
- * 
- * @param product - a product to be added to the blockchain
- */
-export function setProduct(product: Product): void {
-    let storedProduct = productsStorage.get(product.id);
-    if (storedProduct !== null) {
-        throw new Error(`a product with id=${product.id} already exists`);
-    }
-    productsStorage.set(product.id, Product.fromPayload(product));
+export function getTaskById(id: string): Task | null {
+    return listedTasks.get(id);
 }
 
-/**
- * 
- * A function that returns a single product for given owner and product id
- * 
- * @param id - an identifier of a product to be returned
- * @returns a product for a given @param id
- */
-export function getProduct(id: string): Product | null {
-    return productsStorage.get(id);
+export function getTasks(): Task[] {
+    return listedTasks.values();
 }
 
-/**
- * 
- * A function that returns an array of products for all accounts
- * 
- * @returns an array of objects that represent a product
- */
-export function getProducts(): Array<Product> {
-    return productsStorage.values();
+export function updateTaskById(id : string): void {
+  Task.updateTask(id);
+}
+
+export function deleteTaskById(id: string): void {
+  Task.deleteTask(id);
 }
