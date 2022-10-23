@@ -33,7 +33,7 @@ show={showModal} onHide={toggleModal}
   }
   </Modal.Body>
   <Modal.Footer>
-          <Button onClick={() => closeModal(false)}>Close</Button>
+          <Button onClick={() => closeModal(false)} size="sm">Close</Button>
          </Modal.Footer>
 </Modal>
 

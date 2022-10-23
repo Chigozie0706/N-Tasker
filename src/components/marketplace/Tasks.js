@@ -16,8 +16,11 @@ const Products = () => {
 const [taskDetails, setTaskDetails] = useState({})
 const [taskDetailsModal, setTaskDetailsModal] = useState(false)
 const [disable, setDisable] =useState(false)
+const [show, setShow] = useState(false);
 
   
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   
   const getTaskLists = useCallback(async () => {
     try {
@@ -33,23 +36,24 @@ const [disable, setDisable] =useState(false)
 
   const addTask = async (data) => {
   try {
-    // setLoading(true);
-    createTask(data).then((resp) => {
+        createTask(data).then((resp) => {
        console.log(resp)
        getTaskLists()
        toast.success("Task added successfully")
-    });
+       handleClose()
+           });
 
   } catch (error) {
     console.log({ error });
     toast.error("network error")
-  } finally {
-    // setLoading(false);
+      } finally {
+    
   }
 };
 
 const deleteTask = async (id) => {
   try{
+    toast.success("please wait your request is been processed")
     setDisable(true)
     deleteTaskById(id)
     .then((resp) => {
@@ -110,7 +114,7 @@ const closeModal = (data) => {
 
 
 
-  console.log(taskLists)
+
 
 
   useEffect(() => {
@@ -128,8 +132,11 @@ const closeModal = (data) => {
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h1 className="fs-4 fw-bold mb-0">Task Lists</h1>
             <AddTask 
-            
+            show ={show}
              save={addTask} 
+             handleClose = {handleClose}
+             handleShow = {handleShow}
+             
             />
           </div>
            <Table  bordered hover variant="dark">

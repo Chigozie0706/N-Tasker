@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Modal, Form, FloatingLabel } from "react-bootstrap";
 
-const Index = ({ save }) => {
+
+const Index = ({ save, show, handleClose, handleShow }) => {
   const [taskDescription, setTaskDescription] = useState("");
   const [taskName, setTaskName] = useState("");
   const isFormFilled = () => taskName && taskDescription;
 
-  const [show, setShow] = useState(false);
+  
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  
+  
 
   return (
     <>
@@ -22,7 +23,7 @@ const Index = ({ save }) => {
       >
         <i class="bi bi-plus"></i>
       </Button>
-      <Modal show={show} onHide={handleClose} centered>
+      <Modal show={show} onHide={handleClose} centered  backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>New Task</Modal.Title>
         </Modal.Header>
@@ -73,7 +74,7 @@ const Index = ({ save }) => {
                 taskName,
                 taskDescription
               });
-              handleClose();
+    
             }}
           >
             Create Task
