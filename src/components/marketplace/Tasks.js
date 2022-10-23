@@ -10,7 +10,7 @@ import {
   getTasks, createTask, updateTaskById, deleteTaskById, getTaskById
 } from "../../utils/marketplace";
 
-const Products = () => {
+const Index = () => {
   const [loading, setLoading] = useState(false);
   const [taskLists, setTaskLists] = useState([])
 const [taskDetails, setTaskDetails] = useState({})
@@ -53,8 +53,8 @@ const [show, setShow] = useState(false);
 
 const deleteTask = async (id) => {
   try{
-    toast.success("please wait your request is been processed")
     setDisable(true)
+    toast.success("please wait your request is been processed")
     deleteTaskById(id)
     .then((resp) => {
       toast.success("Task deleted successfully")
@@ -62,7 +62,7 @@ const deleteTask = async (id) => {
     })
   }
   catch(error) {
-    // console.log({error})
+   setDisable(false)
     toast.error("network error")
   }
   finally{
@@ -77,7 +77,7 @@ const updateTask = async (id) => {
     updateTaskById(id)
     .then((resp) => {
       console.log(resp)
-      toast.success("Task done")
+      toast.success("Task done successfully")
       getTaskLists()
       setDisable(false)
     })
@@ -180,4 +180,4 @@ const closeModal = (data) => {
   );
 };
 
-export default Products;
+export default Index;
