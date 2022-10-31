@@ -1,53 +1,52 @@
-import { PersistentUnorderedMap, context, PersistentMap, u128, logging } from "near-sdk-as";
+import {
+  PersistentUnorderedMap,
+  context,
+  PersistentMap,
+  u128,
+  logging,
+} from "near-sdk-as";
 
 /**
- * {@link nearBindgen} - it's a decorator that makes this class serializable so it can be persisted on the blockchain level. 
+ * {@link nearBindgen} - it's a decorator that makes this class serializable so it can be persisted on the blockchain level.
  */
 @nearBindgen
 export class Task {
-    id: string;
-    taskName: string;
-    taskDescription: string;
-    dateCreated: u64;
-    status: string;
-    
-    public static fromPayload(payload: Task): Task {
-        const task = new Task();
-        task.id = payload.id;
-        task.taskName = payload.taskName;
-        task.taskDescription = payload.taskDescription;
-        task.dateCreated = context.blockTimestamp;
-        task.status = "pending";
-        return task;
-    }
+  id: string;
+  taskName: string;
+  taskDescription: string;
+  dateCreated: u64;
+  creator:string
+  status: string;
 
-    
+  public static fromPayload(payload: Task): Task {
+    const task = new Task();
+    task.id = payload.id;
+    task.taskName = payload.taskName;
+    task.taskDescription = payload.taskDescription;
+    task.dateCreated = context.blockTimestamp;
+    task.status = "pending";
+    task.creator = context.sender;
+    return task;
+  }
 
-    public static updateTask(
-        id: string
-    ): void {
-        const task = listedTasks.get(id);
+  public static updateTask(id: string): void {
+    const task = listedTasks.get(id);
 
-        if (task == null) throw new Error("task not found");
-        else {
-            task.status = "done";
-            listedTasks.set(task.id, task);
-        }
-    }
+    if (task == null) throw new Error("task not found");
 
+    task.status = "done";
+    listedTasks.set(task.id, task);
+  }
 
-    public static deleteTask(
-        id: string
-    ): void {
+  public static deleteTask(id: string): void {
     logging.log(`deleting task`);
-        const beat = listedTasks.get(id);
+    const beat = listedTasks.get(id);
 
-        if (beat == null) throw new Error("drug not found");
-        else {
-            listedTasks.delete(beat.id);
-        }
+    if (beat == null) throw new Error("task not found");
+    else {
+      listedTasks.delete(beat.id);
     }
+  }
 }
 
-
-export const listedTasks = new PersistentUnorderedMap<string,Task>("tasks");
+export const listedTasks = new PersistentUnorderedMap<string, Task>("tasks");
