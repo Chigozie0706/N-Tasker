@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import AddTask from "./AddTask";
 import ViewTask from "./ViewTask"
 import Loader from "../utils/Loader";
-import {Table, Button } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import { AiFillDelete, AiOutlineFolderView } from "react-icons/ai";
 import { GoChecklist } from "react-icons/go";
 import {
@@ -13,15 +13,15 @@ import {
 const Index = () => {
   const [loading, setLoading] = useState(false);
   const [taskLists, setTaskLists] = useState([])
-const [taskDetails, setTaskDetails] = useState({})
-const [taskDetailsModal, setTaskDetailsModal] = useState(false)
-const [disable, setDisable] =useState(false)
-const [show, setShow] = useState(false);
+  const [taskDetails, setTaskDetails] = useState({})
+  const [taskDetailsModal, setTaskDetailsModal] = useState(false)
+  const [disable, setDisable] = useState(false)
+  const [show, setShow] = useState(false);
 
-  
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  
+
   const getTaskLists = useCallback(async () => {
     try {
       setLoading(true);
@@ -35,86 +35,80 @@ const [show, setShow] = useState(false);
 
 
   const addTask = async (data) => {
-  try {
-        createTask(data).then((resp) => {
-       console.log(resp)
-       getTaskLists()
-       toast.success("Task added successfully")
-       handleClose()
-           });
+    try {
+      createTask(data).then((resp) => {
+        console.log(resp)
+        getTaskLists()
+        toast.success("Task added successfully")
+        handleClose()
+      });
 
-  } catch (error) {
-    console.log({ error });
-    toast.error("network error")
-      } finally {
-    
-  }
-};
+    } catch (error) {
+      console.log({ error });
+      toast.error("network error")
+    }
+  };
 
-const deleteTask = async (id) => {
-  try{
-    setDisable(true)
-    toast.success("please wait your request is been processed")
-    deleteTaskById(id)
-    .then((resp) => {
-      toast.success("Task deleted successfully")
-      getTaskLists()
-    })
-  }
-  catch(error) {
-   setDisable(false)
-    toast.error("network error")
-  }
-  finally{
-    setDisable(false)
-  }
-}
-
-
-const updateTask = async (id) => {
-  try{
-    setDisable(true)
-    updateTaskById(id)
-    .then((resp) => {
-      console.log(resp)
-      toast.success("Task done successfully")
-      getTaskLists()
+  const deleteTask = async (id) => {
+    try {
+      setDisable(true)
+      toast.success("please wait your request is been processed")
+      deleteTaskById(id)
+        .then((resp) => {
+          toast.success("Task deleted successfully")
+          getTaskLists()
+        })
+    }
+    catch (error) {
       setDisable(false)
-    })
+      toast.error("network error")
+    }
+    finally {
+      setDisable(false)
+    }
   }
-  catch(error) {
-    console.log({error})
-    toast.error("network error")
-    setDisable(false)
+
+
+  const updateTask = async (id) => {
+    try {
+      setDisable(true)
+      updateTaskById(id)
+        .then((resp) => {
+          console.log(resp)
+          toast.success("Task done successfully")
+          getTaskLists()
+          setDisable(false)
+        })
+    }
+    catch (error) {
+      console.log({ error })
+      toast.error("network error")
+      setDisable(false)
+    }
   }
-}
 
-const getTaskDetails = async (taskId) => {
-  try{
-    getTaskById(taskId)
-    .then((resp) => {
-      console.log(resp)
-      setTaskDetails(resp)
-    })
+  const getTaskDetails = async (taskId) => {
+    try {
+      getTaskById(taskId)
+        .then((resp) => {
+          console.log(resp)
+          setTaskDetails(resp)
+        })
+    }
+    catch (error) {
+      console.log({ error })
+    }
   }
-  catch(error) {
-    console.log({error})
+
+  const toggleTaskDetailsModal = (id) => {
+    getTaskDetails(id);
+    setTaskDetailsModal(!taskDetailsModal)
+
   }
-}
 
-const toggleTaskDetailsModal = (id) => {
-  getTaskDetails(id);
-  setTaskDetailsModal(!taskDetailsModal)
-
-}
-
-const closeModal = (data) => {
-  setTaskDetailsModal(!taskDetailsModal)
-}
-
-
-
-
+  const closeModal = () => {
+    setTaskDetailsModal(!taskDetailsModal)
+  }
 
 
   useEffect(() => {
@@ -126,51 +120,51 @@ const closeModal = (data) => {
 
       {!loading ? (
         <>
-        <ViewTask  taskDetails={taskDetails} showModal={taskDetailsModal} 
-        toggleModal={toggleTaskDetailsModal} closeModal={closeModal} />
+          <ViewTask taskDetails={taskDetails} showModal={taskDetailsModal}
+            toggleModal={toggleTaskDetailsModal} closeModal={closeModal} />
 
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h1 className="fs-4 fw-bold mb-0">Task Lists</h1>
-            <AddTask 
-            show ={show}
-             save={addTask} 
-             handleClose = {handleClose}
-             handleShow = {handleShow}
-             
+            <AddTask
+              show={show}
+              save={addTask}
+              handleClose={handleClose}
+              handleShow={handleShow}
+
             />
           </div>
-           <Table  bordered hover variant="dark">
-      <thead>
-        <tr>
-          <th>#</th>
-              <th>Task Name</th>
-              <th>Date Created</th>
-              <th>Status</th>
-               <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-      {taskLists.map((item, index) => (
-        <tr key={index}>
-          <td>{index + 1}</td>
-          <td>{item.taskName}</td>
-          <td>{new Date(item.dateCreated / 1000000).toDateString()}</td>
-          <td style={{backgroundColor: item.status === 'pending' ? 'orange' : 'green', textTransform : 'capitalize'}}>{item.status}</td>
-          <td className="d-flex justify-content-between">
-                  <Button size="sm" disabled={disable} variant="success" onClick={() => updateTask(item.id)}>
-                    <GoChecklist />
-                  </Button>
-                  <Button size="sm"  disabled={disable} 
-                  onClick={() => toggleTaskDetailsModal(item.id)}
-                  ><AiOutlineFolderView  variant="white"/></Button>
-                  <Button size="sm" disabled={disable}
-                  variant="danger" onClick={() => deleteTask(item.id)}><AiFillDelete /> </Button>
+          <Table bordered hover variant="dark">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Task Name</th>
+                <th>Date Created</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {taskLists.map((item, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{item.taskName}</td>
+                  <td>{new Date(item.dateCreated / 1000000).toDateString()}</td>
+                  <td style={{ backgroundColor: item.status === 'pending' ? 'orange' : 'green', textTransform: 'capitalize' }}>{item.status}</td>
+                  <td className="d-flex justify-content-between">
+                    <Button size="sm" disabled={disable} variant="success" onClick={() => updateTask(item.id)}>
+                      <GoChecklist />
+                    </Button>
+                    <Button size="sm" disabled={disable}
+                      onClick={() => toggleTaskDetailsModal(item.id)}
+                    ><AiOutlineFolderView variant="white" /></Button>
+                    <Button size="sm" disabled={disable}
+                      variant="danger" onClick={() => deleteTask(item.id)}><AiFillDelete /> </Button>
                   </td>
-        </tr>
-        ))
-    }
-      </tbody>
-    </Table>
+                </tr>
+              ))
+              }
+            </tbody>
+          </Table>
 
         </>
       ) : (
