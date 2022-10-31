@@ -1,4 +1,4 @@
-import { PersistentUnorderedMap, context, PersistentMap, u128, logging } from "near-sdk-as";
+import { PersistentUnorderedMap, context, logging } from "near-sdk-as";
 
 /**
  * {@link nearBindgen} - it's a decorator that makes this class serializable so it can be persisted on the blockchain level. 
@@ -6,6 +6,7 @@ import { PersistentUnorderedMap, context, PersistentMap, u128, logging } from "n
 @nearBindgen
 export class Task {
     id: string;
+    owner: string;
     taskName: string;
     taskDescription: string;
     dateCreated: u64;
@@ -14,6 +15,7 @@ export class Task {
     public static fromPayload(payload: Task): Task {
         const task = new Task();
         task.id = payload.id;
+        task.owner = context.sender;
         task.taskName = payload.taskName;
         task.taskDescription = payload.taskDescription;
         task.dateCreated = context.blockTimestamp;
@@ -30,6 +32,7 @@ export class Task {
 
         if (task == null) throw new Error("task not found");
         else {
+            assert(task.owner == context.sender, "Not owner of the task");
             task.status = "done";
             listedTasks.set(task.id, task);
         }
@@ -40,11 +43,12 @@ export class Task {
         id: string
     ): void {
     logging.log(`deleting task`);
-        const beat = listedTasks.get(id);
+        const task = listedTasks.get(id);
 
-        if (beat == null) throw new Error("drug not found");
+        if (task == null) throw new Error("task not found");
         else {
-            listedTasks.delete(beat.id);
+            assert(task.owner == context.sender, "Not owner of the task");
+            listedTasks.delete(task.id);
         }
     }
 }

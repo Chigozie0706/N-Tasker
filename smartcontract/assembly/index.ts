@@ -2,7 +2,9 @@ import {Task, listedTasks } from './model';
 
 // function to create a task. 
 export function createTask(task: Task): void {
-    let storedTask = listedTasks.get(task.id);
+  assert(task.taskDescription.length > 0, "Empty task description");
+  assert(task.taskName.length > 0, "Empty task name");  
+  let storedTask = listedTasks.get(task.id);
     if (storedTask !== null) {
         throw new Error(`a task with ${task.id} already exists`);
     }
