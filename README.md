@@ -1,6 +1,6 @@
 # N-Tasker
 
-With the N-Tracker contract:
+With the N-Tasker contract:
 
 - You can create a task 
 - View all task created
