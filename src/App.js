@@ -5,6 +5,8 @@ import Wallet from "./components/Wallet";
 import { Notification } from "./components/utils/Notifications";
 import Tasks from "./components/marketplace/Tasks";
 import Cover from "./components/utils/Cover";
+import coverImg from "./assets/img/sandwich.jpg";
+
 import "./App.css";
 
 const App = function AppWrapper() {
@@ -18,6 +20,8 @@ const App = function AppWrapper() {
     }
   });
 
+// <Cover name="N-Tasker" login={login}  />
+      
   useEffect(() => {
     getBalance();
   }, [getBalance]);
@@ -42,7 +46,8 @@ const App = function AppWrapper() {
           </main>
         </Container>
       ) : (
-        <Cover name="N-Tasker" login={login}  />
+        
+      <Cover name="N-Tasker" login={login} coverImg={coverImg} />
       )}
     </>
   );
